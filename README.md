@@ -2,7 +2,7 @@
 
 A two-person check a family runs before an elderly relative sends money to someone new. A trusted family member, the second key, calls them back and reads out a release code.
 
-**Try it:** [two phones side by side](https://marc-dvci.github.io/Second-Key/demo.html) · [the app on your own phone](https://marc-dvci.github.io/Second-Key/)
+**Try it:** [two phones side by side](https://marc-dvci.github.io/Second-Key/demo.html) · [the app on your own phone](https://marc-dvci.github.io/Second-Key/) · **Video (2:11):** https://youtu.be/9ZTDW2QXfXk
 
 ![Second Key on two phones: the parent waits for the call while the second key sees the fake bank adviser script](docs/images/demo.png)
 
@@ -22,6 +22,8 @@ Second Key moves the bank's two controls into the family, whichever bank the par
 
 The code only reaches the parent by voice, on a call the second key makes.
 
+![How the release code travels between the two phones](docs/images/release-code.png)
+
 - Both phones compute it as HMAC-SHA-256 over the request (pairing id, request id, amount, payee, payee type, the four answers, time), keyed with the 32-byte secret shared at pairing, and reduced to six digits with the dynamic truncation of RFC 4226. The truncation is tested against the RFC 6238 SHA-256 test vectors. Code: [`src/core/code.ts`](src/core/code.ts).
 - The request link carries the request, never the secret, and rides in the URL fragment, which browsers do not send to the web server. Code: [`src/core/links.ts`](src/core/links.ts).
 - The parent's phone never displays the code. It recomputes it only to compare with what the parent types, and locks the request after three wrong codes.
@@ -37,6 +39,8 @@ The table was committed before the evaluation cases were added. On 22 scam cases
 |---|---|
 | Scam cases where the main script names the right family | **21 of 22** |
 | Ordinary payments with no script raised | 8 of 10 |
+
+![Every evaluation case, by scam family](docs/images/evaluation.png)
 
 The missed case is an investment website the person found on their own. The two ordinary payments that raise a script are a firm that changed its bank details and a marketplace seller known only online, which are the cases where a call-back is worth making. Every case, its answers and its source: [`docs/evaluation.md`](docs/evaluation.md). Regenerate with `npm run evaluate`; CI fails if the committed file is out of date.
 
@@ -60,6 +64,7 @@ Open `http://localhost:5173/Second-Key/demo.html` for both phones side by side. 
 | `npm test` | Unit tests: release code, RFC vectors, links, amounts, scam scripts |
 | `npm run e2e` | Browser tests: pairing two separate phones, the full journey, a tampered link, refusal, lock, receipts, and an axe WCAG 2.2 AA scan of every screen |
 | `npm run evaluate` | Runs the scam scripts over `cases/cases.json` and writes `docs/evaluation.md` |
+| `npm run figures` | Draws the two figures above into `docs/images/` from the same code |
 | `npm run build` | Type check and production build into `dist/` |
 
 Every push to `main` runs the unit tests and the evaluation, builds, and deploys to GitHub Pages.

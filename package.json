@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "e2e": "playwright test",
-    "evaluate": "node scripts/evaluate.ts"
+    "evaluate": "node scripts/evaluate.ts",
+    "figures": "node scripts/figures.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
