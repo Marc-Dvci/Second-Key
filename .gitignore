@@ -1,0 +1,17 @@
+# Personal learning context stays out of commits
+/devpost/learner-profile.md
+
+# Local credentials
+.env
+.env.*
+!.env.example
+
+# Build output and dependencies
+node_modules/
+dist/
+test-results/
+playwright-report/
+
+# Agent-specific copies of the skill pack (canonical copy lives in .agents/skills)
+/.claude/
+/agent/
