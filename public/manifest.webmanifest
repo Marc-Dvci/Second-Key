@@ -1,0 +1,11 @@
+{
+  "name": "Second Key",
+  "short_name": "Second Key",
+  "description": "A two-person check a family runs before an elderly relative sends money to someone new.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FBF7EF",
+  "theme_color": "#FBF7EF",
+  "icons": [{ "src": "key.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

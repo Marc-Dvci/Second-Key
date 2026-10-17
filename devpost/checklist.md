@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. A request travels to the second key and the code read back unlocks it**
+- [x] **1. A request travels to the second key and the code read back unlocks it**
   Becomes usable: On the demo page, the parent makes a request, the second key's phone shows it with a "Show the code" button, and typing that code on the parent's phone turns the key. Pairing is seeded by a test link for now.
   Why now: This is the kernel. Scaffold, release code, links, both phones and the demo delivery all have to work for it, so every later slice lands on a working path.
   PRD ref: `prd.md > The Core Journey` (steps 2-7), `prd.md > Making a Request`, `prd.md > Releasing the Code`, `prd.md > Demo Page`

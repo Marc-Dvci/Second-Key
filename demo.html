@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="key.svg" type="image/svg+xml" />
+    <title>Second Key · two phones</title>
+  </head>
+  <body class="demo">
+    <div class="stage">
+      <figure class="phone" data-device="parent">
+        <figcaption><strong id="parent-label">The parent’s phone</strong><span>sends the money</span></figcaption>
+        <div class="frame"><iframe id="parent" title="The parent’s phone"></iframe></div>
+      </figure>
+      <div class="wire" aria-live="polite">
+        <div id="toast" class="toast" hidden></div>
+        <div id="call" class="call" hidden></div>
+      </div>
+      <figure class="phone" data-device="key">
+        <figcaption><strong id="key-label">The second key’s phone</strong><span>approves</span></figcaption>
+        <div class="frame"><iframe id="key" title="The second key’s phone"></iframe></div>
+      </figure>
+    </div>
+    <p class="demo-bar">
+      Each phone runs the real app with its own storage. Links that would travel by camera or text message are handed across.
+      <button type="button" id="reset">Reset both phones</button>
+    </p>
+    <script type="module" src="/src/demo.ts"></script>
+  </body>
+</html>
