@@ -5,8 +5,9 @@ import '@fontsource/atkinson-hyperlegible/700.css';
 import './styles.css';
 import { decodeRequest } from './core/links.ts';
 import { ATTEMPTS, canonical } from './core/request.ts';
+import { matchScripts } from './core/rules.ts';
 import { getPairing, getRequest, saveRequest } from './state/storage.ts';
-import { h, screen } from './ui/dom.ts';
+import { embedded, h, screen } from './ui/dom.ts';
 import { renderAsk } from './ui/views/ask.ts';
 import { renderDone, renderHome } from './ui/views/home.ts';
 import { incomingPair, renderPairForm, renderPairShow } from './ui/views/pair.ts';
@@ -25,6 +26,12 @@ function incomingRequest(payload: string): void {
   if (!pairing || pairing.role !== 'key') {
     return notice('This phone is not paired yet', 'Open the link in the browser you used for pairing.');
   }
+  if (request.pairId !== pairing.pairId) {
+    return notice(
+      `This request is not from ${pairing.parent.name}’s phone`,
+      `It was made on a phone you are not paired with. Do not act on it. If ${pairing.parent.name} needs you, call on the number saved at pairing.`,
+    );
+  }
   const known = getRequest(request.id);
   if (known && canonical(known) !== canonical(request)) {
     return notice(
@@ -32,7 +39,9 @@ function incomingRequest(payload: string): void {
       `It no longer matches the one ${pairing.parent.name} sent you. Do not approve it. Call ${pairing.parent.name} on the number saved at pairing.`,
     );
   }
-  if (!known) saveRequest({ ...request, status: 'waiting', attemptsLeft: ATTEMPTS, scripts: [] });
+  if (!known) {
+    saveRequest({ ...request, status: 'waiting', attemptsLeft: ATTEMPTS, scripts: matchScripts(request).map((s) => s.id) });
+  }
   replaceHash(`#/review/${request.id}`);
   renderReview(pairing, request.id);
 }
@@ -67,6 +76,9 @@ function route(): void {
   }
   renderHome(pairing);
 }
+
+// Inside the demo page's phone frames, scrollbars would read as part of the phone.
+if (embedded) document.documentElement.classList.add('embedded');
 
 window.addEventListener('hashchange', route);
 route();

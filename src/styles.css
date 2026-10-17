@@ -390,3 +390,79 @@ a:focus-visible {
 .btn.demo-only {
   border-style: dashed;
 }
+
+h2 {
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 22px 0 10px;
+}
+
+.briefing {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 4px 16px 10px;
+  margin: 8px 0 4px;
+  border: 2px solid var(--line);
+}
+
+.briefing.alert {
+  border-color: var(--stop);
+  border-left-width: 8px;
+}
+
+.briefing.calm {
+  border-left: 8px solid var(--ink-soft);
+}
+
+.briefing h2 {
+  margin-top: 6px;
+}
+
+.briefing .eyebrow {
+  margin: 12px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--stop);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.briefing blockquote {
+  margin: 0 0 12px;
+  font-style: italic;
+  font-size: 19px;
+}
+
+.briefing .ask-label {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.briefing ul {
+  margin: 0 0 8px;
+  padding-left: 1.1em;
+}
+
+.briefing li {
+  margin-bottom: 6px;
+}
+
+.briefing .also {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+.btn.call {
+  background: var(--go);
+  border-color: var(--go);
+  color: #fff;
+  text-decoration: none;
+}
+
+html.embedded {
+  scrollbar-width: none;
+}
+
+html.embedded::-webkit-scrollbar {
+  display: none;
+}

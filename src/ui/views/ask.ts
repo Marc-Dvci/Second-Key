@@ -12,6 +12,7 @@ import {
   type PayeeKind,
   type Request,
 } from '../../core/request.ts';
+import { matchScripts } from '../../core/rules.ts';
 import { saveRequest, type Pairing } from '../../state/storage.ts';
 import { backLink, button, deliver, embedded, go, h, screen } from '../dom.ts';
 
@@ -128,7 +129,7 @@ function summaryStep(pairing: Pairing): void {
   const ensure = (): Request => {
     if (!request) {
       request = build();
-      saveRequest({ ...request, status: 'waiting', attemptsLeft: ATTEMPTS, scripts: [] });
+      saveRequest({ ...request, status: 'waiting', attemptsLeft: ATTEMPTS, scripts: matchScripts(request).map((s) => s.id) });
     }
     return request;
   };

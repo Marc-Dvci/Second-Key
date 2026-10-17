@@ -1,8 +1,10 @@
 // The second key reviews a request, calls the parent, and decides.
 import { releaseCode } from '../../core/code.ts';
+import { telHref } from '../../core/links.ts';
 import { QUESTIONS, formatAmount, payeeKindLabel, type StoredRequest } from '../../core/request.ts';
+import { matchScripts } from '../../core/rules.ts';
 import { getRequest, saveRequest, type Pairing } from '../../state/storage.ts';
-import { backLink, button, go, h, screen } from '../dom.ts';
+import { backLink, button, embedded, go, h, screen, signalCall } from '../dom.ts';
 
 export function renderReview(pairing: Pairing, id: string): void {
   const request = getRequest(id);
@@ -22,10 +24,46 @@ export function renderReview(pairing: Pairing, id: string): void {
     `${parentName} is asking you to approve a payment`,
     'key',
     backLink('Home', '#/home'),
+    h('p', { class: 'request-line' }, `${formatAmount(request.amountCents)} to ${request.payee}`),
+    briefing(request, parentName),
+    callButton(pairing),
+    h('h2', {}, `What ${parentName} answered`),
     details(request),
     h('label', { class: 'check' }, onCall, ` I called ${parentName} on the number saved at pairing, and we are talking now`),
     show,
   );
+}
+
+function briefing(request: StoredRequest, parentName: string): HTMLElement {
+  const [main, ...others] = matchScripts(request);
+  if (!main) {
+    return h(
+      'section',
+      { class: 'briefing calm', 'aria-label': 'Scam check' },
+      h('h2', {}, 'No known scam script matched'),
+      h('p', {}, 'You are still the second key: call before you decide.'),
+    );
+  }
+  return h(
+    'section',
+    { class: 'briefing alert', 'aria-label': 'Scam check' },
+    h('p', { class: 'eyebrow' }, 'This looks like'),
+    h('h2', {}, main.name),
+    h('blockquote', {}, main.says),
+    h('p', {}, main.why),
+    h('p', { class: 'ask-label' }, `Ask ${parentName}:`),
+    h('ul', {}, ...main.ask.map((q) => h('li', {}, q))),
+    others.length > 0 && h('p', { class: 'also' }, `Also: ${others.map((s) => s.name.toLowerCase()).join('; ')}.`),
+  );
+}
+
+function callButton(pairing: Pairing): HTMLElement {
+  const { name, phone } = pairing.parent;
+  const label = `Call ${name} · ${phone}`;
+  if (embedded) {
+    return button(label, () => signalCall(pairing.key.name, name, phone), 'call');
+  }
+  return h('a', { class: 'btn call', href: telHref(phone) }, label);
 }
 
 export function details(request: StoredRequest): HTMLElement {

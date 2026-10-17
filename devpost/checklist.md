@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Start from empty phones on the demo page, pair them, and check the words match.
   Commit: `Pair two phones by QR code`
 
-- [ ] **3. The second key sees which scam script the answers match**
+- [x] **3. The second key sees which scam script the answers match**
   Becomes usable: The review names the matching script, quotes what such callers say, lists questions to ask, or says no known script matched; the call button dials the saved number; foreign requests are refused.
   Why now: Turns the review into the second key's briefing for the call. The table is committed before the evaluation cases exist.
   PRD ref: `prd.md > Reviewing a Request`
@@ -92,3 +92,4 @@ Activity mode:
 
 ## Revisions
 
+- Slice 3 landed in two commits, the script table first (`Add scam script table`) — the evaluation cases had to arrive after a committed table, so the table could not be tuned on them.
