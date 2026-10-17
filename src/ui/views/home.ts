@@ -17,6 +17,7 @@ export function renderHome(pairing: Pairing): void {
         button(`Waiting for ${pairing.key.name}: ${formatAmount(waiting.amountCents)} to ${waiting.payee}`, () =>
           go(`#/wait/${waiting.id}`),
         'secondary'),
+      h('a', { class: 'link', href: '#/receipts' }, 'My receipts'),
     );
   } else {
     screen(
@@ -27,8 +28,18 @@ export function renderHome(pairing: Pairing): void {
         { class: 'lead' },
         `When ${pairing.parent.name} is asked to send money to someone new, the request opens here.`,
       ),
+      waitingForKey(),
+      h('a', { class: 'link', href: '#/receipts' }, 'Receipts'),
     );
   }
+}
+
+function waitingForKey(): HTMLElement | null {
+  const waiting = getRequests().find((r) => r.status === 'waiting');
+  if (!waiting) return null;
+  return button(`Open the waiting request: ${formatAmount(waiting.amountCents)} to ${waiting.payee}`, () =>
+    go(`#/review/${waiting.id}`),
+  'primary');
 }
 
 export function renderDone(pairing: Pairing, id: string): void {

@@ -12,7 +12,8 @@ import { renderAsk } from './ui/views/ask.ts';
 import { renderDone, renderHome } from './ui/views/home.ts';
 import { incomingPair, renderPairForm, renderPairShow } from './ui/views/pair.ts';
 import { renderReview } from './ui/views/review.ts';
-import { renderWait } from './ui/views/wait.ts';
+import { renderReceipts } from './ui/views/receipts.ts';
+import { renderStopped, renderWait } from './ui/views/wait.ts';
 import { renderKeyHelp, renderWelcome } from './ui/views/welcome.ts';
 
 function replaceHash(hash: string): void {
@@ -67,7 +68,9 @@ function route(): void {
     return renderWelcome();
   }
   if (pairing.role === 'parent' && !pairing.confirmed) return void renderPairShow(pairing);
+  if (path === 'receipts') return renderReceipts(pairing);
   if (pairing.role === 'parent') {
+    if (path === 'stopped' && arg) return renderStopped(pairing, arg);
     if (path === 'ask') return renderAsk(pairing, Number(arg) || 0);
     if (path === 'wait' && arg) return renderWait(pairing, arg);
     if (path === 'done' && arg) return renderDone(pairing, arg);

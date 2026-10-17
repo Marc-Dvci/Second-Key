@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Make a "safe account" request and an ordinary one, and compare what the second key sees.
   Commit: `Name the matching scam script for the second key`
 
-- [ ] **4. Refusal, lock and receipts on both phones**
+- [x] **4. Refusal, lock and receipts on both phones**
   Becomes usable: "I don't agree" and "Tom said no" paths, three-attempt lock, and a receipts list on each phone.
   Why now: Completes the loop for the outcome that matters most, the refusal.
   PRD ref: `prd.md > Refusing`, `prd.md > Receipts`, `prd.md > States and Boundaries`

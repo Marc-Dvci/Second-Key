@@ -10,6 +10,7 @@ export function renderReview(pairing: Pairing, id: string): void {
   const request = getRequest(id);
   if (!request) return go('#/home');
   if (request.status === 'approved') return void showCode(pairing, request);
+  if (request.status === 'refused') return showRefused(pairing, request);
 
   const parentName = pairing.parent.name;
   const onCall = h('input', { type: 'checkbox', id: 'on-call' });
@@ -31,6 +32,29 @@ export function renderReview(pairing: Pairing, id: string): void {
     details(request),
     h('label', { class: 'check' }, onCall, ` I called ${parentName} on the number saved at pairing, and we are talking now`),
     show,
+    button('I don’t agree', () => {
+      saveRequest({ ...request, status: 'refused', decidedAt: new Date().toISOString() });
+      showRefused(pairing, getRequest(id)!);
+    }, 'danger'),
+  );
+}
+
+function showRefused(pairing: Pairing, request: StoredRequest): void {
+  const name = pairing.parent.name;
+  screen(
+    'You said no',
+    'key',
+    h('p', { class: 'request-line' }, `${formatAmount(request.amountCents)} to ${request.payee}`),
+    h('p', { class: 'ask-label' }, `Tell ${name}:`),
+    h(
+      'ol',
+      { class: 'steps stop' },
+      h('li', {}, 'Do not send the money.'),
+      h('li', {}, 'Hang up, or stop replying to the message.'),
+      h('li', {}, 'Call your bank on the number on the back of your card.'),
+    ),
+    h('p', { class: 'note' }, `${name} taps “${pairing.key.name} said no” on the waiting screen. No code is given.`),
+    button('Done', () => go('#/home'), 'secondary'),
   );
 }
 
