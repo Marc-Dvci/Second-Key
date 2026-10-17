@@ -59,7 +59,7 @@ Build mode: fast
   Learner check: Read `docs/evaluation.md` and spot-check two cases against their sources.
   Commit: `Evaluate the scripts on public scam cases`
 
-- [ ] **6. Look and feel, accessibility and deployment**
+- [x] **6. Look and feel, accessibility and deployment**
   Becomes usable: The final typography, colours and key animation, an installable manifest, an axe-clean app, and the live site on GitHub Pages.
   Why now: The behaviour is settled, so styling and deployment no longer move under the tests.
   PRD ref: `prd.md > Look and Feel`
