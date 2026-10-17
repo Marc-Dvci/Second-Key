@@ -49,7 +49,7 @@ Build mode: fast
   Learner check: Refuse a request, then try three wrong codes on another, then open receipts on both phones.
   Commit: `Refusal, lock and receipts`
 
-- [ ] **5. The case set shows what the scripts catch**
+- [x] **5. The case set shows what the scripts catch**
   Becomes usable: `npm run evaluate` prints and writes how many public scam cases get a named script and how many ordinary payments raise none.
   Why now: Evidence for the impact claim, computed on the frozen table.
   PRD ref: `prd.md > Reviewing a Request`
