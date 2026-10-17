@@ -41,6 +41,7 @@ PRD ref: `prd.md > The Core Journey`.
 - Local: `npm install`, then `npm run dev`, then open `http://localhost:5173/Second-Key/demo.html` for both phones side by side, or `http://localhost:5173/Second-Key/` on each phone on the same network (`npm run dev -- --host`).
 - Tests: `npm test` (unit), `npm run e2e` (two-phone browser tests), `npm run evaluate` (case set).
 - Deployment: GitHub Pages from GitHub Actions on every push to `main`, at `https://marc-dvci.github.io/Second-Key/`. The demo video is recorded from the deployed demo page.
+- Sharing: public repository https://github.com/Marc-Dvci/Second-Key (MIT, licence detected in the About box); live demo https://marc-dvci.github.io/Second-Key/demo.html.
 
 ## Look and Feel
 Implements `prd.md > Look and Feel`.
