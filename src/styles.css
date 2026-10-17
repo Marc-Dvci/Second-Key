@@ -336,3 +336,57 @@ a:focus-visible {
     transition: none;
   }
 }
+
+.brass {
+  color: var(--brass);
+}
+
+.qr {
+  margin: 8px auto 4px;
+  max-width: 300px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.words-label {
+  margin-top: 18px;
+  font-weight: 700;
+}
+
+.words {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.words li {
+  background: var(--card);
+  border: 2px solid var(--brass);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.steps {
+  padding-left: 1.2em;
+}
+
+.steps li {
+  margin-bottom: 12px;
+}
+
+.btn.demo-only {
+  border-style: dashed;
+}

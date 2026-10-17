@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { approveAndReadCode, calmAnswers, makeRequest, phones } from './helpers.ts';
+import { approveAndReadCode, calmAnswers, makeRequest, pairPhones, phones } from './helpers.ts';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('demo.html');
+  await pairPhones(page);
 });
 
 test('a request travels to the second key and the code read back turns the key', async ({ page }) => {

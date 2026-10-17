@@ -7,6 +7,24 @@ export const phones = (page: Page) => ({
   key: page.frameLocator('#key'),
 });
 
+/** Pairs the two demo phones as Anne (parent) and Tom (second key). */
+export async function pairPhones(page: Page): Promise<void> {
+  const { parent, key } = phones(page);
+  await parent.getByRole('button', { name: 'I send the money' }).click();
+  await parent.getByLabel('Your first name').fill('Anne');
+  await parent.getByLabel('Your phone number').fill('+33 6 12 34 56 78');
+  await parent.getByLabel('Your second key’s first name').fill('Tom');
+  await parent.getByLabel('Their phone number').fill('+33 6 98 76 54 32');
+  await parent.getByRole('button', { name: 'Next' }).click();
+  await parent.getByRole('button', { name: 'Scan with Tom’s phone' }).click();
+  await expect(key.getByRole('heading', { name: 'Become Anne’s second key?' })).toBeVisible();
+  expect(await key.locator('.words').innerText()).toBe(await parent.locator('.words').innerText());
+  await key.getByRole('button', { name: 'The words match' }).click();
+  await parent.getByRole('button', { name: 'The words match on Tom’s phone' }).click();
+  await expect(parent.getByRole('heading', { name: 'Hello, Anne' })).toBeVisible();
+  await expect(key.getByRole('heading', { name: 'You are Anne’s second key' })).toBeVisible();
+}
+
 /** Walks the parent's request screens and presses "Send to …". */
 export async function makeRequest(
   parent: FrameLocator,

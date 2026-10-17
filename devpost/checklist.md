@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Open the demo page, make a request on the left phone, read the code on the right phone, type it on the left, and watch the key turn.
   Commit: `Request, release code and unlock across two phones`
 
-- [ ] **2. Two phones pair by QR code with matching check words**
+- [x] **2. Two phones pair by QR code with matching check words**
   Becomes usable: The welcome screen, pairing form, QR code and three check words on the parent's phone; the confirmation on the second key's phone; homes that name each other.
   Why now: Replaces the seeded pairing with the real setup before scripts and receipts build on it.
   PRD ref: `prd.md > Pairing`, `prd.md > Screens and Layout`

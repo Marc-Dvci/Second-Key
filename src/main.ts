@@ -9,8 +9,10 @@ import { getPairing, getRequest, saveRequest } from './state/storage.ts';
 import { h, screen } from './ui/dom.ts';
 import { renderAsk } from './ui/views/ask.ts';
 import { renderDone, renderHome } from './ui/views/home.ts';
+import { incomingPair, renderPairForm, renderPairShow } from './ui/views/pair.ts';
 import { renderReview } from './ui/views/review.ts';
 import { renderWait } from './ui/views/wait.ts';
+import { renderKeyHelp, renderWelcome } from './ui/views/welcome.ts';
 
 function replaceHash(hash: string): void {
   history.replaceState(null, '', location.pathname + location.search + hash);
@@ -42,11 +44,20 @@ function notice(title: string, text: string): void {
 function route(): void {
   const hash = location.hash;
   if (hash.startsWith('#req=')) return incomingRequest(hash.slice(5));
+  if (hash.startsWith('#pair=')) {
+    const payload = hash.slice(6);
+    replaceHash('#/');
+    return void incomingPair(payload);
+  }
 
   const pairing = getPairing();
-  if (!pairing) return notice('Not paired yet', 'Open the demo page to pair two phones.');
-
   const [path, arg = ''] = hash.replace(/^#\/?/, '').split('/');
+  if (!pairing) {
+    if (path === 'pair') return renderPairForm();
+    if (path === 'key-help') return renderKeyHelp();
+    return renderWelcome();
+  }
+  if (pairing.role === 'parent' && !pairing.confirmed) return void renderPairShow(pairing);
   if (pairing.role === 'parent') {
     if (path === 'ask') return renderAsk(pairing, Number(arg) || 0);
     if (path === 'wait' && arg) return renderWait(pairing, arg);
