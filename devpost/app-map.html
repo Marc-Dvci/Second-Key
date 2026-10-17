@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Second Key · app map</title>
+<style>
+  :root { --paper:#fbf7ef; --ink:#1b2433; --soft:#4a5466; --line:#d9d2c3; --brass:#a87a2a; --go:#1e6b45; --sky:#eef4fa; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { font-size: 32px; margin: 0 0 6px; }
+  h2 { font-size: 22px; margin: 34px 0 10px; }
+  p.sub { color: var(--soft); margin-top: 0; }
+  code { background:#fff; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size: 15px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 18px; margin: 10px 0; }
+  ol.route > li { margin-bottom: 14px; }
+  .diagram { width:100%; height:auto; background:#fff; border:1px solid var(--line); border-radius:14px; }
+  details { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin:8px 0; }
+  summary { cursor:pointer; font-weight:700; }
+  summary:focus-visible, a:focus-visible { outline:3px solid #1f5fbf; outline-offset:2px; }
+  table { border-collapse: collapse; width: 100%; background:#fff; }
+  td, th { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align: top; font-size: 16px; }
+  .note { color: var(--soft); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Second Key: app map</h1>
+  <p class="sub">A take-home guide to where things live. Snapshot of commit <code>ab066b8</code>; the code may have moved on since.</p>
+
+  <h2>What the app is</h2>
+  <p>A web page that runs on two phones. The <strong>parent</strong> asks before paying someone new; the <strong>second key</strong> calls back and reads a six-digit release code. The code is computed on both phones from a secret shared at pairing and the exact request, so only the second key can produce it, and only for that request. Everything a phone knows sits in its own browser storage.</p>
+  <div class="card">
+    <strong>Main pieces</strong>
+    <ul>
+      <li><code>src/main.ts</code>: reads the URL, handles incoming pairing and request links, picks the screen.</li>
+      <li><code>src/core/</code>: the release code, the links, the request model, the scam script table.</li>
+      <li><code>src/state/storage.ts</code>: each phone's saved pairing and requests.</li>
+      <li><code>src/ui/views/</code>: one file per screen.</li>
+    </ul>
+  </div>
+
+  <h2>One action, end to end: the parent types the code</h2>
+  <svg class="diagram" viewBox="0 0 820 220" role="img" aria-labelledby="dtitle">
+    <title id="dtitle">The parent types the code; wait.ts check() asks code.ts releaseCode() for the expected code, compares, saves the request as approved in storage, and home.ts renderDone() shows Second key turned.</title>
+    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1b2433"/></marker></defs>
+    <g font-family="system-ui, sans-serif" font-size="14" fill="#1b2433">
+      <rect x="10" y="70" width="150" height="80" rx="12" fill="#fbf7ef" stroke="#a87a2a" stroke-width="2"/>
+      <text x="85" y="102" text-anchor="middle" font-weight="700">Parent types</text>
+      <text x="85" y="122" text-anchor="middle">the six digits</text>
+      <rect x="210" y="70" width="170" height="80" rx="12" fill="#fff" stroke="#1b2433"/>
+      <text x="295" y="102" text-anchor="middle" font-weight="700">wait.ts</text>
+      <text x="295" y="122" text-anchor="middle">check()</text>
+      <rect x="430" y="10" width="170" height="80" rx="12" fill="#fff" stroke="#1b2433"/>
+      <text x="515" y="42" text-anchor="middle" font-weight="700">code.ts</text>
+      <text x="515" y="62" text-anchor="middle">releaseCode()</text>
+      <rect x="430" y="130" width="170" height="80" rx="12" fill="#fff" stroke="#1b2433"/>
+      <text x="515" y="162" text-anchor="middle" font-weight="700">storage.ts</text>
+      <text x="515" y="182" text-anchor="middle">saveRequest()</text>
+      <rect x="650" y="70" width="160" height="80" rx="12" fill="#e6f1ea" stroke="#1e6b45" stroke-width="2"/>
+      <text x="730" y="102" text-anchor="middle" font-weight="700">home.ts</text>
+      <text x="730" y="122" text-anchor="middle">“Second key turned”</text>
+      <line x1="160" y1="110" x2="208" y2="110" stroke="#1b2433" stroke-width="2" marker-end="url(#a)"/>
+      <line x1="380" y1="95" x2="428" y2="60" stroke="#1b2433" stroke-width="2" marker-end="url(#a)"/>
+      <line x1="380" y1="125" x2="428" y2="160" stroke="#1b2433" stroke-width="2" marker-end="url(#a)"/>
+      <line x1="600" y1="160" x2="648" y2="125" stroke="#1b2433" stroke-width="2" marker-end="url(#a)"/>
+    </g>
+  </svg>
+
+  <h2>Reference route</h2>
+  <p class="note">A reference route through real code, to follow in your editor.</p>
+  <ol class="route">
+    <li><strong><code>src/ui/views/wait.ts</code>, search <code>const check = async</code>.</strong> Reads the six digits, asks for the expected code, and either saves the request as <code>approved</code> or spends one of the three attempts. At zero attempts the request becomes <code>locked</code>.</li>
+    <li><strong><code>src/core/code.ts</code>, search <code>export async function releaseCode</code>.</strong> HMAC-SHA-256 over <code>canonical(request)</code> with the pairing secret, then <code>truncate()</code> to six digits (RFC 4226 dynamic truncation). The same function runs on the second key's phone to show the code.</li>
+    <li><strong><code>src/ui/views/home.ts</code>, search <code>export function renderDone</code>.</strong> Shows the turned key only for a request whose saved status is <code>approved</code>.</li>
+  </ol>
+
+  <h2>To change this, start here</h2>
+  <table>
+    <tr><th>You want to…</th><th>Start in</th></tr>
+    <tr><td>Change a question the parent answers</td><td><code>src/core/request.ts</code>, <code>QUESTIONS</code>. The canonical text, and so the code, covers the answers.</td></tr>
+    <tr><td>Add or reword a scam script</td><td><code>src/core/scripts.ts</code>, <code>SCRIPTS</code>; then run <code>npm run evaluate</code> and commit <code>docs/evaluation.md</code>.</td></tr>
+    <tr><td>Change the number of attempts</td><td><code>src/core/request.ts</code>, <code>ATTEMPTS</code>.</td></tr>
+    <tr><td>Restyle a role</td><td><code>src/styles.css</code>, the tokens at the top and <code>body[data-role='key']</code>.</td></tr>
+    <tr><td>Change how links travel on the demo page</td><td><code>src/demo.ts</code> and <code>deliver()</code> in <code>src/ui/dom.ts</code>.</td></tr>
+  </table>
+
+  <h2>A practice to reuse</h2>
+  <div class="card">
+    <p><strong>Write the attack as an acceptance criterion, then as a test.</strong> The PRD says “changing any field of the request makes its code invalid” (<code>prd.md &gt; Releasing the Code</code>). Turning that into the browser test in <code>tests/e2e/journey.spec.ts</code> (“a code made for a tampered link does not unlock the real request”) showed that the second key's phone ignored a changed copy of a request it had already saved. The fix is the check in <code>src/main.ts</code>, search <code>canonical(known)</code>, which refuses the changed copy outright.</p>
+    <p>On another project: for each thing a user must not be able to do, write the observable result in the requirements and drive it in a test before calling the feature done.</p>
+  </div>
+
+  <details>
+    <summary>Run it again</summary>
+    <p><code>npm install</code>, then <code>npm run dev</code>, then open <code>http://localhost:5173/Second-Key/demo.html</code>. Tests: <code>npm test</code>, <code>npm run e2e</code>, <code>npm run evaluate</code>.</p>
+  </details>
+</main>
+</body>
+</html>

@@ -71,24 +71,25 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 1, on the demo page
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Early usable behavior explored — after slice 1, on the demo page: the journey ran end to end; an empty call box showed between the phones and the phone frames had extra bottom padding, both fixed before slice 2
+- [x] Final kick-the-tires exploration and feedback completed — full journey on the deployed site (pair, request, scam briefing, call banner), plus refusal, lock and receipts in the browser tests
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
+  Findings: none open after the slice 1 layout fixes. Verified: 31 unit tests, 11 browser tests including an axe WCAG 2.2 AA scan of every screen, production build, live deploy.
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence:
-Route and stops:
-Edit outcome:
-Reflection:
-Activity mode:
+Activity and evidence: focused alternative, connected to practice that happened during slice 1. The acceptance criterion `prd.md > Releasing the Code` ("changing any field of the request makes its code invalid") became the browser test "a code made for a tampered link does not unlock the real request" in `tests/e2e/journey.spec.ts`; writing it showed the second key's phone ignored a changed copy of a saved request, which led to the refusal in `src/main.ts` (`canonical(known)`).
+Route and stops: reference route in the app map: `src/ui/views/wait.ts` (`const check = async`) → `src/core/code.ts` (`releaseCode`) → `src/ui/views/home.ts` (`renderDone`).
+Edit outcome: not applicable.
+Reflection: not applicable.
+Activity mode: focused alternative, prior practice connected.
 
 ## Revisions
 
